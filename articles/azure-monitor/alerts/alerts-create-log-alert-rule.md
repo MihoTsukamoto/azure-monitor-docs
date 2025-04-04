@@ -51,6 +51,7 @@ Alerts triggered by these alert rules contain a payload that uses the [common al
     * Log search alert rule queries support [ago()](/azure/data-explorer/kusto/query/ago-function) with [timespan literals](/azure/data-explorer/kusto/query/scalar-data-types/timespan#timespan-literals) only.
     * `AggregatedValue` is a reserved word. You can't use it in the query on log search alert rules.
     * The combined size of all data in the properties of the log search alert rules can't exceed 64 KB.
+    * The Alert Service evaluates logs in UTC for the evaluation period. If you customize the TimeGenerated (timestamp) fields in the Log Alert rule query to each region's time zone, they will not be evaluated correctly. For example, customizing the timestamp with "| where TimeGenerated + 9h" is not recommended in the query.
     * When defining custom functions in the KQL query for log search alerts, it is important to be cautious with function code that includes relative time clauses (e.g., now()). Custom functions with relative time clauses that are not defined within the log search alert KQL query itself can introduce inconsistencies in query results, potentially impacting the accuracy and reliability of alert evaluations. Therefore:
         * To ensure accurate and timely alerting, always define relative time clauses directly within the log search alert KQL query.
         * If time ranges are needed inside the function, they should be passed as parameters and used in the function.
